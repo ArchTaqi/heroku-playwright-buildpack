@@ -34,7 +34,6 @@ install_system_deps() {
 # Chromium dependencies
 libnspr4
 libnss3
-libxss1
 libasound2t64
 fonts-noto-color-emoji
 libgbm1
