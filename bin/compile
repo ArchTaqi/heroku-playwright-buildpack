@@ -19,7 +19,7 @@ topic() {
 install_system_deps() {
 	topic "Installing System Dependencies"
 
-	APT_BUILDPACK="https://github.com/heroku/heroku-buildpack-apt"
+	APT_BUILDPACK="https://github.com/KinnTech/heroku-buildpack-apt"
 	local buildpack_tmpdir=$(mktemp -d)
 	cd $buildpack_tmpdir && git clone $APT_BUILDPACK .
 
