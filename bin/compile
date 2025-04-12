@@ -29,11 +29,11 @@ install_system_deps() {
   build_tmpdir=$(mktemp -d)
   mkdir -p "$build_tmpdir"
 
-  SUPPORTED_BROWSERS=${PLAYWRIGHT_BUILDPACK_BROWSERS:-chromium,firefox,webkit}
+  # Only Chromium dependencies
+  SUPPORTED_BROWSERS="chromium"
   echo "Installing Playwright dependencies (env: PLAYWRIGHT_BUILDPACK_BROWSERS) for $SUPPORTED_BROWSERS."
 
-  if [[ "$SUPPORTED_BROWSERS" == *"chromium"* ]]; then
-    cat <<EOF >>"$build_tmpdir/Aptfile"
+  cat <<EOF >>"$build_tmpdir/Aptfile"
 # Chromium dependencies
 libatk1.0-0
 libatk-bridge2.0-0
@@ -45,34 +45,6 @@ libgbm1
 libxkbcommon0
 libasound2
 EOF
-  fi
-
-  if [[ "$SUPPORTED_BROWSERS" == *"firefox"* ]]; then
-    cat <<EOF >>"$build_tmpdir/Aptfile"
-# Firefox dependencies
-libdbus-glib-1-2
-libxt6
-libsm6
-libice6
-libx11-xcb1
-libxcursor1
-libxi6
-EOF
-  fi
-
-  if [[ "$SUPPORTED_BROWSERS" == *"firefox"* || "$SUPPORTED_BROWSERS" == *"chromium"* ]]; then
-    cat <<EOF >>"$build_tmpdir/Aptfile"
-# Needed by Firefox and Chromium
-libgdk-pixbuf2.0-0
-libcairo-gobject2
-libpulse0
-libusb-1.0-0
-libatk1.0-0
-libxcomposite1
-libxdamage1
-libxfixes3
-EOF
-  fi
 
   case "$STACK" in
     "heroku-18")
