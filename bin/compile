@@ -6,7 +6,6 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_DIR=$3
 BP_DIR=$(cd "$(dirname "$0")"; cd ..; pwd)
-STACK=${STACK:-heroku-24}  # default for local testing
 
 error() {
   echo " !     $*" >&2
@@ -30,8 +29,7 @@ install_system_deps() {
   mkdir -p "$build_tmpdir"
 
   # Only Chromium dependencies
-  SUPPORTED_BROWSERS="chromium"
-  echo "Installing Playwright dependencies (env: PLAYWRIGHT_BUILDPACK_BROWSERS) for $SUPPORTED_BROWSERS."
+  echo "Installing Playwright dependencies for Chromium on heroku-24."
 
   cat <<EOF >>"$build_tmpdir/Aptfile"
 # Chromium dependencies
@@ -43,25 +41,13 @@ libxfixes3
 libxrandr2
 libgbm1
 libxkbcommon0
+libasound2
+libgdk-pixbuf2.0-0
+libcairo-gobject2
+libpulse0
+libusb-1.0-0
+libvpx9
 EOF
-
-  case "$STACK" in
-    "heroku-18")
-      echo "libvpx5" >>"$build_tmpdir/Aptfile"
-      ;;
-    "heroku-20")
-      echo "libvpx6" >>"$build_tmpdir/Aptfile"
-      ;;
-    "heroku-22")
-      echo "libvpx7" >>"$build_tmpdir/Aptfile"
-      ;;
-    "heroku-24")
-      echo "libvpx9" >>"$build_tmpdir/Aptfile"
-      ;;
-    *)
-      error "Unsupported STACK: must be 'heroku-18', 'heroku-20', 'heroku-22', or 'heroku-24'"
-      ;;
-  esac
 
   echo "Installing Apt packages..."
   local cache_tmpdir
@@ -105,7 +91,7 @@ export_env_dir() {
   fi
 }
 
-topic "Detected STACK: $STACK"
+topic "Detected STACK: heroku-24"
 export_env_dir "$ENV_DIR" PLAYWRIGHT_BUILDPACK_BROWSERS
 install_system_deps
 configure_export_env
