@@ -41,7 +41,6 @@ libxfixes3
 libxrandr2
 libgbm1
 libxkbcommon0
-libasound2
 libgdk-pixbuf2.0-0
 libcairo-gobject2
 libpulse0
